@@ -13,7 +13,7 @@ A review that only summarizes the diff has not happened.
 ## The workflow this review sits in
 
 1. Every PR opens as a draft.
-2. Exactly one review is dispatched per PR: one third-party service, or the in-house adversarial review when no service has credits.
+2. Exactly one review is dispatched per PR: one third-party service, or the in-house adversarial review when no service is available - out of credits, in a cooldown window, or not installed on the repository.
 3. The author triages every finding to responded-and-resolved: each finding gets an explicit reply, and either a fix or a reasoned rejection.
 4. The validation pipeline runs after triage, and the PR merges only with the review evidence recorded (the BIG-164 gate).
 
@@ -27,7 +27,7 @@ Post only findings you are prepared to defend.
 2. Read the target repo's own agent guidance (AGENTS.md / CLAUDE.md) and any rule aggregates it carries.
    Documented repo standards outrank general taste.
 3. Fetch josh-padnick/code-rules and apply the matching subset (next section).
-   A violated rule is a finding; cite the rule filename.
+   A violated rule is a finding; cite the rule path.
 4. Hunt in order of consequence: correctness, data loss and security, broken contracts, missing or weakened tests, then maintainability.
 5. Verify each candidate finding before posting it: name the file and line, and the concrete input, state, or sequence that makes it fail.
 6. Drop what does not survive verification.
@@ -42,8 +42,8 @@ Third-party systems already bring a corpus; this is ours.
 Before hunting:
 
 1. Fetch josh-padnick/code-rules (private; use the reviewer's `gh` auth).
-2. Load the top-level technology folders the PR actually touches (react, typescript, go, playwright, goose, tanstack-query, tanstack-router, zustand).
-   Those folders are the general corpus.
+2. Load the top-level technology folders the PR actually touches.
+   Those folders are the general corpus; read the corpus root for the current set, which today is react, typescript, go, playwright, goose, tanstack-query, tanstack-router, and zustand.
 3. If the repository under review belongs to a named domain, also load `_domains/<domain>/<matching-tech>/`.
    Fabrica is the first domain; Big Plan is reserved next.
    Domain rules are false findings on any other product.
